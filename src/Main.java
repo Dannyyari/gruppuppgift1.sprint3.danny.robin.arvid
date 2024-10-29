@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 public class Main extends JFrame implements ActionListener {
     JPanel mainArea =new JPanel();
-    JPanel centerArea =new JPanel();
+ //   JPanel centerArea =new JPanel();
     JPanel southArea=new JPanel();
     JPanel playArea=new JPanel();
     JButton resetButton=new JButton("Nytt spel");
@@ -30,9 +30,11 @@ public class Main extends JFrame implements ActionListener {
         add(mainArea);
         mainArea.setLayout(new BorderLayout());
         playArea.setLayout(new GridLayout(4,4));
-        mainArea.add(centerArea, BorderLayout.CENTER);
+      //de kommenterade ska ej användas då vi vill att knapparna ska se störe ut
+        //  mainArea.add(centerArea, BorderLayout.CENTER);
         mainArea.add(southArea, BorderLayout.SOUTH);
-        centerArea.add(playArea);
+     //   centerArea.add(playArea);
+       mainArea.add(playArea);
         southArea.add(resetButton);
         playArea.add(b1);
         playArea.add(b2);
