@@ -2,8 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main extends JFrame implements ActionListener {
+    RandomizeButtons rb =new RandomizeButtons();
+
     JPanel mainArea =new JPanel();
  //   JPanel centerArea =new JPanel();
     JPanel southArea=new JPanel();
@@ -25,7 +29,9 @@ public class Main extends JFrame implements ActionListener {
     JButton b14 = new JButton("14");
     JButton b15 = new JButton("15");
     JButton b16 = new JButton("");
-
+    List<JButton> listOfButtonsSorted= Arrays.asList(b1, b2,b3,b4,b5,b6,b7,b8,
+            b9,b10,b11,b12,b13,b14,b15,b16);
+    List<JButton> listOfRandomizedButtons= rb.getRamdomizedButtons(listOfButtonsSorted);
     public Main(){
         add(mainArea);
         mainArea.setLayout(new BorderLayout());
@@ -34,8 +40,16 @@ public class Main extends JFrame implements ActionListener {
         //  mainArea.add(centerArea, BorderLayout.CENTER);
         mainArea.add(southArea, BorderLayout.SOUTH);
      //   centerArea.add(playArea);
-       mainArea.add(playArea);
+        mainArea.add(playArea);
         southArea.add(resetButton);
+
+        for (JButton randomButton : listOfRandomizedButtons) {
+            playArea.add(randomButton);
+        }
+        //Kanske flytta denna actionlistner i en annan klass?
+        resetButton.addActionListener(this);
+
+        /*
         playArea.add(b1);
         playArea.add(b2);
         playArea.add(b3);
@@ -53,7 +67,7 @@ public class Main extends JFrame implements ActionListener {
         playArea.add(b15);
         playArea.add(b16);
 
-
+*/
         setTitle("15 game");
         setSize(400,400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,6 +83,15 @@ public class Main extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        if (e.getSource()==resetButton) {
+            List<JButton> randomizedListForButton=rb.getRamdomizedButtons(listOfButtonsSorted);
+            playArea.removeAll();
+            for (JButton jButton : randomizedListForButton){
+                playArea.add(jButton);
+            }
+            playArea.repaint();
+            //funktion nedan förnyar rutan
+            SwingUtilities.updateComponentTreeUI(this);
+        }
     }
 }
