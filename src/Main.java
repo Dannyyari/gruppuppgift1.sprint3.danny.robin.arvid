@@ -28,7 +28,7 @@ public class Main extends JFrame implements ActionListener {
     JButton b14 = new JButton("14");
     JButton b15 = new JButton("15");
     JButton b16 = new JButton("");
-    JButton clickedButton = new JButton();
+    JButton clickedButton;
     ArrayList<JButton> buttonList = new ArrayList<>
             (Arrays.asList(b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16));
 
@@ -91,15 +91,19 @@ public class Main extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         clickedButton = (JButton) e.getSource();
         moveButton();
-
     }
 
     public void moveButton() {
-        Collections.swap(buttonList, buttonList.indexOf(clickedButton), buttonList.indexOf(b16));
-        for (JButton jb : buttonList) {
-            playArea.add(jb);
+        int indexClick = buttonList.indexOf(clickedButton);
+        int index16 = buttonList.indexOf(b16);
+        if ((indexClick - 1) == index16 || (indexClick + 1) == index16 ||
+                (indexClick - 4) == index16 || (indexClick + 4) == index16) {
+            Collections.swap(buttonList, buttonList.indexOf(clickedButton), buttonList.indexOf(b16));
+            for (JButton jb : buttonList) {
+                playArea.add(jb);
+            }
+            playArea.repaint();
+            SwingUtilities.updateComponentTreeUI(this);
         }
-        playArea.repaint();
-        SwingUtilities.updateComponentTreeUI(this);
     }
 }
