@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class Main extends JFrame implements ActionListener {
     JPanel mainArea =new JPanel();
@@ -25,6 +28,10 @@ public class Main extends JFrame implements ActionListener {
     JButton b14 = new JButton("14");
     JButton b15 = new JButton("15");
     JButton b16 = new JButton("");
+    static JButton clickedButton = new JButton();
+    ArrayList<JButton> buttonList = new ArrayList<>
+            (Arrays.asList(b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16));
+
 
     public Main(){
         add(mainArea);
@@ -50,6 +57,21 @@ public class Main extends JFrame implements ActionListener {
         playArea.add(b14);
         playArea.add(b15);
         playArea.add(b16);
+        b1.addActionListener(this);
+        b2.addActionListener(this);
+        b3.addActionListener(this);
+        b4.addActionListener(this);
+        b5.addActionListener(this);
+        b6.addActionListener(this);
+        b7.addActionListener(this);
+        b8.addActionListener(this);
+        b9.addActionListener(this);
+        b10.addActionListener(this);
+        b11.addActionListener(this);
+        b12.addActionListener(this);
+        b13.addActionListener(this);
+        b14.addActionListener(this);
+        b15.addActionListener(this);
 
 
         setTitle("15 game");
@@ -67,6 +89,24 @@ public class Main extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+//        MoveButton mb = new MoveButton();
+        clickedButton = (JButton) e.getSource();
+        moveButton();
+//        Collections.swap(buttonList, buttonList.indexOf(clickedButton), buttonList.indexOf(b16));
+//        for (JButton jb : buttonList) {
+//            playArea.add(jb);
+//        }
+//        playArea.repaint();
+//        SwingUtilities.updateComponentTreeUI(this);
+    }
 
+    public void moveButton() {
+
+        Collections.swap(buttonList, buttonList.indexOf(Main.clickedButton), buttonList.indexOf(b16));
+        for (JButton jb : buttonList) {
+            playArea.add(jb);
+        }
+        playArea.repaint();
+        SwingUtilities.updateComponentTreeUI(this);
     }
 }
