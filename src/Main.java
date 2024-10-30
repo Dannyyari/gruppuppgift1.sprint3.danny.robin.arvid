@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Main extends JFrame implements ActionListener {
     RandomizeButtons rb = new RandomizeButtons();
-
+    JButtonComparison jbc = new JButtonComparison();
     JPanel mainArea = new JPanel();
     JPanel southArea = new JPanel();
     JPanel playArea = new JPanel();
@@ -103,6 +103,7 @@ public class Main extends JFrame implements ActionListener {
             }
             playArea.repaint();
             SwingUtilities.updateComponentTreeUI(this);
+            jbc.compareAnswers(listOfRandomizedButtons,listOfButtonsSorted);
         }
     }
 }
