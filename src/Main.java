@@ -36,10 +36,7 @@ public class Main extends JFrame implements ActionListener {
         add(mainArea);
         mainArea.setLayout(new BorderLayout());
         playArea.setLayout(new GridLayout(4,4));
-      //de kommenterade ska ej användas då vi vill att knapparna ska se störe ut
-        //  mainArea.add(centerArea, BorderLayout.CENTER);
         mainArea.add(southArea, BorderLayout.SOUTH);
-     //   centerArea.add(playArea);
         mainArea.add(playArea);
         southArea.add(resetButton);
 
@@ -49,25 +46,7 @@ public class Main extends JFrame implements ActionListener {
         //Kanske flytta denna actionlistner i en annan klass?
         resetButton.addActionListener(this);
 
-        /*
-        playArea.add(b1);
-        playArea.add(b2);
-        playArea.add(b3);
-        playArea.add(b4);
-        playArea.add(b5);
-        playArea.add(b6);
-        playArea.add(b7);
-        playArea.add(b8);
-        playArea.add(b9);
-        playArea.add(b10);
-        playArea.add(b11);
-        playArea.add(b12);
-        playArea.add(b13);
-        playArea.add(b14);
-        playArea.add(b15);
-        playArea.add(b16);
 
-*/
         setTitle("15 game");
         setSize(400,400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

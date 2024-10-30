@@ -7,12 +7,8 @@ public class RandomizeButtons {
     public RandomizeButtons(){}
 
     public List<JButton> getRamdomizedButtons(List<JButton> listOfButtonsInOrder){
-        List<JButton> random=new ArrayList<>();
-        for (JButton button : listOfButtonsInOrder) {
-            random.add(button);
-        }
-        Collections.shuffle(random);
-        return random;
+        Collections.shuffle(listOfButtonsInOrder);
+        return listOfButtonsInOrder;
     }
 
     //onödig lista kanske
