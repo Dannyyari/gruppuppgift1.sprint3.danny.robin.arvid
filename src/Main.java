@@ -2,13 +2,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main extends JFrame implements ActionListener {
-    JPanel mainArea =new JPanel();
-    JPanel centerArea =new JPanel();
-    JPanel southArea=new JPanel();
-    JPanel playArea=new JPanel();
-    JButton resetButton=new JButton("Nytt spel");
+    RandomizeButtons rb = new RandomizeButtons();
+    JPanel mainArea = new JPanel();
+    JPanel southArea = new JPanel();
+    JPanel playArea = new JPanel();
+    JButton resetButton = new JButton("Nytt spel");
+
+
     JButton b1 = new JButton("1");
     JButton b2 = new JButton("2");
     JButton b3 = new JButton("3");
@@ -26,47 +32,90 @@ public class Main extends JFrame implements ActionListener {
     JButton b15 = new JButton("15");
     JButton b16 = new JButton("");
 
-    public Main(){
+    List<JButton> listOfButtonsSorted = Arrays.asList(b1, b2, b3, b4, b5, b6, b7, b8,
+            b9, b10, b11, b12, b13, b14, b15, b16);
+    List<JButton> listOfRandomizedButtons = new ArrayList<>();
+
+    JButton clickedButton;
+
+    public Main() {
         add(mainArea);
         mainArea.setLayout(new BorderLayout());
-        playArea.setLayout(new GridLayout(4,4));
-        mainArea.add(centerArea, BorderLayout.CENTER);
+        playArea.setLayout(new GridLayout(4, 4));
         mainArea.add(southArea, BorderLayout.SOUTH);
-        centerArea.add(playArea);
+        mainArea.add(playArea);
         southArea.add(resetButton);
-        playArea.add(b1);
-        playArea.add(b2);
-        playArea.add(b3);
-        playArea.add(b4);
-        playArea.add(b5);
-        playArea.add(b6);
-        playArea.add(b7);
-        playArea.add(b8);
-        playArea.add(b9);
-        playArea.add(b10);
-        playArea.add(b11);
-        playArea.add(b12);
-        playArea.add(b13);
-        playArea.add(b14);
-        playArea.add(b15);
-        playArea.add(b16);
 
+        resetButton.addActionListener(this);
+        // Lägg till knappar och lyssnare i playArea.
+        addButtons ();
 
-        setTitle("15 game");
-        setSize(400,400);
+        setTitle("Slide Game");
+        setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // pack(); //ska göras på slutet
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
+    //om gjord till en enklare metod.
+    private void addButtons() {
+        listOfRandomizedButtons = rb.getRamdomizedButtons(listOfButtonsSorted);
+        Collections.shuffle(listOfRandomizedButtons);
 
-    public static void main(String[] args) {
-        Main m =new Main();
+        playArea.removeAll();
+
+        for (JButton button : listOfRandomizedButtons) {
+            playArea.add(button);
+            button.addActionListener(this);
+        }
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == resetButton) {
+            resetGame();
+        } else {
+            moveButton((JButton) e.getSource());
+        }
+    }
 
+    private void resetGame() {
+        playArea.removeAll();
+        addButtons();
+        playArea.repaint();
+        SwingUtilities.updateComponentTreeUI(this);
+    }
+
+
+    public void moveButton(JButton clickedButton) {
+        int indexClick = listOfRandomizedButtons.indexOf(clickedButton);
+        int index16 = listOfRandomizedButtons.indexOf(b16);
+
+        if ((indexClick - 1) == index16 || (indexClick + 1) == index16 ||
+                (indexClick - 4) == index16 || (indexClick + 4) == index16) {
+            Collections.swap(listOfRandomizedButtons, indexClick, index16);
+            playArea.removeAll();
+            for (JButton jb : listOfRandomizedButtons) {
+                playArea.add(jb);
+            }
+            playArea.repaint();
+            SwingUtilities.updateComponentTreeUI(this);
+
+            checkIfSolved();
+        }
+    }
+    private void checkIfSolved() {
+        //Läser från play area för varje plats, så fort det inte stämmer överens med facit så bryter den.
+        for (int i = 0; i < listOfButtonsSorted.size(); i++) {
+            if (!listOfRandomizedButtons.get(i).getText().equals(listOfButtonsSorted.get(i).getText())) {
+                return;
+            }
+        }
+        JOptionPane.showMessageDialog(this, "GRATTIS! Du har löst spelet!");
+    }
+    public static void main(String[] args) {
+        new Main();
     }
 }
+
+
