@@ -7,7 +7,7 @@ public class MoveButton {
     public void moveButton() {
         Main m = new Main();
 
-        Collections.swap(m.buttonList, m.buttonList.indexOf(Main.clickedButton), m.buttonList.indexOf(m.b16));
+        Collections.swap(m.buttonList, m.buttonList.indexOf(m.clickedButton), m.buttonList.indexOf(m.b16));
         for (JButton jb : m.buttonList) {
             m.playArea.add(jb);
         }
