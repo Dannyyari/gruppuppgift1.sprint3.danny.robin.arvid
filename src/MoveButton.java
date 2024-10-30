@@ -1,6 +1,4 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collections;
 
 public class MoveButton {
@@ -14,8 +12,7 @@ public class MoveButton {
         m.playArea.repaint();
         SwingUtilities.updateComponentTreeUI(m);
 
-
-////        m.b1.getAlignmentX();
+//        m.b1.getAlignmentX();
 //        m.b1.getLocation();
 //        System.out.println(m.playArea.getComponent(5).toString());
 //        int i = 0;
@@ -24,13 +21,11 @@ public class MoveButton {
 //        //System.out.println(b16.getComponentOrientation());
 //        Collections.swap(m.buttonList,i,j);
     }
-
-    public static void main(String[] args) {
-        MoveButton mb = new MoveButton();
-    }
-
+//    public static void main(String[] args) {
+//        MoveButton mb = new MoveButton();
+//    }
+//
 //    @Override
 //    public void actionPerformed(ActionEvent e) {
-//
 //    }
 }

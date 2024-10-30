@@ -32,7 +32,6 @@ public class Main extends JFrame implements ActionListener {
     ArrayList<JButton> buttonList = new ArrayList<>
             (Arrays.asList(b1,b2,b3,b4,b5,b6,b7,b8,b9,b10,b11,b12,b13,b14,b15,b16));
 
-
     public Main(){
         add(mainArea);
         mainArea.setLayout(new BorderLayout());
@@ -73,18 +72,12 @@ public class Main extends JFrame implements ActionListener {
         b14.addActionListener(this);
         b15.addActionListener(this);
 
-
-        setTitle("15 game");
+        setTitle("Slide Game");
         setSize(400,400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // pack(); //ska göras på slutet
         setLocationRelativeTo(null);
         setVisible(true);
-    }
-
-
-    public static void main(String[] args) {
-        Main m =new Main();
     }
 
     @Override
@@ -105,5 +98,9 @@ public class Main extends JFrame implements ActionListener {
             playArea.repaint();
             SwingUtilities.updateComponentTreeUI(this);
         }
+    }
+
+    public static void main(String[] args) {
+        Main m =new Main();
     }
 }
