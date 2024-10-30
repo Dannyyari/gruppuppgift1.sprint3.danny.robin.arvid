@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,6 +34,8 @@ public class Main extends JFrame implements ActionListener {
     List<JButton> listOfButtonsSorted= Arrays.asList(b1, b2,b3,b4,b5,b6,b7,b8,
             b9,b10,b11,b12,b13,b14,b15,b16);
     List<JButton> listOfRandomizedButtons= rb.getRamdomizedButtons(listOfButtonsSorted);
+    JButton clickedButton;
+
     public Main(){
         add(mainArea);
         mainArea.setLayout(new BorderLayout());
@@ -45,19 +49,28 @@ public class Main extends JFrame implements ActionListener {
         }
         //Kanske flytta denna actionlistner i en annan klass?
         resetButton.addActionListener(this);
+        b1.addActionListener(this);
+        b2.addActionListener(this);
+        b3.addActionListener(this);
+        b4.addActionListener(this);
+        b5.addActionListener(this);
+        b6.addActionListener(this);
+        b7.addActionListener(this);
+        b8.addActionListener(this);
+        b9.addActionListener(this);
+        b10.addActionListener(this);
+        b11.addActionListener(this);
+        b12.addActionListener(this);
+        b13.addActionListener(this);
+        b14.addActionListener(this);
+        b15.addActionListener(this);
 
-
-        setTitle("15 game");
+        setTitle("Slide Game");
         setSize(400,400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // pack(); //ska göras på slutet
         setLocationRelativeTo(null);
         setVisible(true);
-    }
-
-
-    public static void main(String[] args) {
-        Main m =new Main();
     }
 
     @Override
@@ -71,6 +84,28 @@ public class Main extends JFrame implements ActionListener {
             playArea.repaint();
             //funktion nedan förnyar rutan
             SwingUtilities.updateComponentTreeUI(this);
+            }
+        else {
+            clickedButton = (JButton) e.getSource();
+            moveButton();
         }
+    }
+
+    public void moveButton() {
+        int indexClick = listOfRandomizedButtons.indexOf(clickedButton);
+        int index16 = listOfRandomizedButtons.indexOf(b16);
+        if ((indexClick - 1) == index16 || (indexClick + 1) == index16 ||
+                (indexClick - 4) == index16 || (indexClick + 4) == index16) {
+            Collections.swap(listOfRandomizedButtons, listOfRandomizedButtons.indexOf(clickedButton), listOfRandomizedButtons.indexOf(b16));
+            for (JButton jb : listOfRandomizedButtons) {
+                playArea.add(jb);
+            }
+            playArea.repaint();
+            SwingUtilities.updateComponentTreeUI(this);
+        }
+    }
+
+    public static void main(String[] args) {
+        Main m =new Main();
     }
 }
