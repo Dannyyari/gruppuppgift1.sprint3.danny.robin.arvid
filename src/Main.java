@@ -48,7 +48,7 @@ public class Main extends JFrame implements ActionListener {
 
         resetButton.addActionListener(this);
         // Lägg till knappar och lyssnare i playArea.
-        addButtons ();
+        resetGame();
 
         setTitle("Slide Game");
         setSize(400, 400);
@@ -59,29 +59,36 @@ public class Main extends JFrame implements ActionListener {
     }
 
     //om gjord till en enklare metod.
-    private void addButtons() {
-        listOfRandomizedButtons = rb.getRamdomizedButtons(listOfButtonsSorted);
-        Collections.shuffle(listOfRandomizedButtons);
-
-        playArea.removeAll();
-
-        for (JButton button : listOfRandomizedButtons) {
-            playArea.add(button);
-            button.addActionListener(this);
-        }
-    }
+//    private void addButtons() {
+//        listOfRandomizedButtons = rb.getRamdomizedButtons(listOfButtonsSorted);
+//        Collections.shuffle(listOfRandomizedButtons);
+//
+//        playArea.removeAll();
+//
+//        for (JButton button : listOfRandomizedButtons) {
+//            playArea.add(button);
+//            button.addActionListener(this);
+//        }
+//    }
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == resetButton) {
+            resetGame();
             resetGame();
         } else {
             moveButton((JButton) e.getSource());
         }
     }
 
-    private void resetGame() {
+    public void resetGame() {
         playArea.removeAll();
-        addButtons();
+        listOfRandomizedButtons = rb.getRamdomizedButtons(listOfButtonsSorted);
+        Collections.shuffle(listOfRandomizedButtons);
+        for (JButton button : listOfRandomizedButtons) {
+            playArea.add(button);
+            button.addActionListener(this);
+        }
+        playArea.revalidate();
         playArea.repaint();
         SwingUtilities.updateComponentTreeUI(this);
     }
