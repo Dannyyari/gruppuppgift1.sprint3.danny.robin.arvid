@@ -79,18 +79,22 @@ public class Main extends JFrame implements ActionListener {
 
     public void resetGame() {
         playArea.removeAll();
+        moveCounter = 0;
+        counter.setText("Antal klick: " + moveCounter);
         listOfRandomizedButtons = rb.getRamdomizedButtons(listOfButtonsSorted);
         if (presentationMode){
             listOfRandomizedButtons = listOfPresentationButtons;
         }
         for (JButton button : listOfRandomizedButtons) {
+            Font newFont=new Font(button.getName(), Font.ITALIC, 40);
+            button.setFont(newFont);
             playArea.add(button);
             button.addActionListener(this);
         }
         playArea.revalidate();
         playArea.repaint();
         SwingUtilities.updateComponentTreeUI(this);
-}
+    }
 
     public void moveButton() {
         int indexClick = listOfRandomizedButtons.indexOf(clickedButton);
