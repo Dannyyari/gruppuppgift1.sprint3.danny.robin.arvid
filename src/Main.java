@@ -58,7 +58,6 @@ public class Main extends JFrame implements ActionListener {
         setTitle("Slide Puzzle");
         setSize(400,400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // pack(); //ska göras på slutet
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -80,6 +79,8 @@ public class Main extends JFrame implements ActionListener {
 
     public void resetGame() {
         playArea.removeAll();
+        moveCounter = 0;
+        counter.setText("Antal klick: " + moveCounter);
         listOfRandomizedButtons = rb.getRamdomizedButtons(listOfButtonsSorted);
         if (presentationMode){
             listOfRandomizedButtons = listOfPresentationButtons;
@@ -93,7 +94,7 @@ public class Main extends JFrame implements ActionListener {
         playArea.revalidate();
         playArea.repaint();
         SwingUtilities.updateComponentTreeUI(this);
-}
+    }
 
     public void moveButton() {
         int indexClick = listOfRandomizedButtons.indexOf(clickedButton);

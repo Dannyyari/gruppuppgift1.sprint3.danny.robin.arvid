@@ -3,15 +3,13 @@ import java.util.List;
 
 public class JButtonComparison {
     public void compareAnswers(List<JButton> listOfRandomizedButtons, List<JButton> listOfButtonsSorted) {
-        boolean match = false;
-        for (int i = 0; i < listOfRandomizedButtons.size(); i++) {
-            if (listOfRandomizedButtons.get(i).getText().equals(listOfButtonsSorted.get(i).getText()))
-                match = true;
-            else
-                match = false;
+        //Läser från play area för varje plats, så fort det inte stämmer överens med facit så bryter den.
+        for (int i = 0; i < listOfButtonsSorted.size(); i++) {
+            if (!listOfRandomizedButtons.get(i).getText().equals(listOfButtonsSorted.get(i).getText())) {
+                return;
+            }
         }
-            if (match)
-                JOptionPane.showMessageDialog(null, "Grattis, du vann!");
+        JOptionPane.showMessageDialog(null, "GRATTIS! Du har löst spelet!");
     }
 
 }
