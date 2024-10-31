@@ -74,7 +74,6 @@ public class Main extends JFrame implements ActionListener {
         setTitle("Slide Game");
         setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // pack(); //ska göras på slutet
         setLocationRelativeTo(null);
         setVisible(true);
     }
