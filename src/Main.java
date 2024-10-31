@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.List;
@@ -49,30 +50,12 @@ public class Main extends JFrame implements ActionListener {
             listOfRandomizedButtons = listOfPresentationButtons;
         }
 
-        for (JButton randomButton : listOfRandomizedButtons) {
-            playArea.add(randomButton);
-            randomButton.addActionListener(this);
-        }
-
         resetButton.addActionListener(this);
-//        b1.addActionListener(this);
-//        b2.addActionListener(this);
-//        b3.addActionListener(this);
-//        b4.addActionListener(this);
-//        b5.addActionListener(this);
-//        b6.addActionListener(this);
-//        b7.addActionListener(this);
-//        b8.addActionListener(this);
-//        b9.addActionListener(this);
-//        b10.addActionListener(this);
-//        b11.addActionListener(this);
-//        b12.addActionListener(this);
-//        b13.addActionListener(this);
-//        b14.addActionListener(this);
-//        b15.addActionListener(this);
+        // Lägg till knappar och lyssnare i playArea.
+        resetGame();
 
-        setTitle("Slide Game");
-        setSize(400, 400);
+        setTitle("Slide Puzzle");
+        setSize(400,400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // pack(); //ska göras på slutet
         setLocationRelativeTo(null);
@@ -86,20 +69,25 @@ public class Main extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == resetButton) {
-            List<JButton> randomizedListForButton = rb.getRamdomizedButtons(listOfButtonsSorted);
-            playArea.removeAll();
-            for (JButton jButton : randomizedListForButton) {
-                playArea.add(jButton);
-            }
-           // playArea.repaint();
-            //playArea.revalidate();
-            SwingUtilities.updateComponentTreeUI(this);
+            resetGame();
+            resetGame();
         } else {
-            clickedButton = (JButton) e.getSource();
-            moveButton();
+            moveButton((JButton) e.getSource());
         }
     }
 
+    public void resetGame() {
+        playArea.removeAll();
+        listOfRandomizedButtons = rb.getRamdomizedButtons(listOfButtonsSorted);
+        Collections.shuffle(listOfRandomizedButtons);
+        for (JButton button : listOfRandomizedButtons) {
+            playArea.add(button);
+            button.addActionListener(this);
+        }
+        playArea.revalidate();
+        playArea.repaint();
+        SwingUtilities.updateComponentTreeUI(this);
+}
     public void moveButton() {
         int indexClick = listOfRandomizedButtons.indexOf(clickedButton);
         int index16 = listOfRandomizedButtons.indexOf(b16);
