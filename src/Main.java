@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -128,6 +130,9 @@ public class Main extends JFrame implements ActionListener {
             playArea.repaint();
             SwingUtilities.updateComponentTreeUI(this);
             jbc.compareAnswers(listOfRandomizedButtons,listOfButtonsSorted);
+            if (listOfRandomizedButtons.equals(listOfButtonsSorted)){
+                addToHighscore();
+            }
         }
     }
 
@@ -144,9 +149,21 @@ public class Main extends JFrame implements ActionListener {
         JOptionPane.showMessageDialog(null, highscore);
     }
 
-    public static void main(String[] args) {
-        Main m = new Main();
+    public void addToHighscore() {
+        String pathtofile="src/highscore.txt";
+        try(BufferedWriter w=new BufferedWriter(new FileWriter(pathtofile, true))) {
+            String name = JOptionPane.showInputDialog("vad heter du");
+            w.write(name + " poäng: " +moveCounter+"\n");
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
+    public static void main(String[] args) {
+        Main main = new Main();
+    }
+
 }
+
 // Merge konflikt: Vid merge av Arvids branch --> master och sedan
 // robins --> master så visade master en variant INNAN Arvids branch
