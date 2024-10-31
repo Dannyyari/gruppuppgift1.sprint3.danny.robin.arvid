@@ -8,15 +8,20 @@ import java.util.List;
 
 public class Main extends JFrame implements ActionListener {
     boolean presentationMode = false;
+
     RandomizeButtons rb = new RandomizeButtons();
     JButtonComparison jbc = new JButtonComparison();
+
     JPanel mainArea = new JPanel();
     JPanel southArea = new JPanel();
     JPanel playArea = new JPanel();
+
+    int moveCounter =0;
+
     JButton resetButton = new JButton("Nytt spel");
     JButton highscore = new JButton("Highscore");
-    int moveCounter = 0;
     JLabel counter = new JLabel("Antal klick: " + moveCounter);
+
     JButton b1 = new JButton("1");
     JButton b2 = new JButton("2");
     JButton b3 = new JButton("3");
@@ -33,6 +38,7 @@ public class Main extends JFrame implements ActionListener {
     JButton b14 = new JButton("14");
     JButton b15 = new JButton("15");
     JButton b16 = new JButton("");
+
     List<JButton> listOfButtonsSorted = Arrays.asList(b1, b2, b3, b4, b5, b6, b7, b8,
             b9, b10, b11, b12, b13, b14, b15, b16);
     List<JButton> listOfRandomizedButtons = rb.getRamdomizedButtons(listOfButtonsSorted);
@@ -42,17 +48,24 @@ public class Main extends JFrame implements ActionListener {
 
     public Main() {
         add(mainArea);
+
         mainArea.setLayout(new BorderLayout());
         playArea.setLayout(new GridLayout(4, 4));
+
         mainArea.add(southArea, BorderLayout.SOUTH);
         mainArea.add(playArea);
+
         southArea.add(resetButton);
         southArea.add(counter);
         southArea.add(highscore);
 
         resetButton.addActionListener(this);
         highscore.addActionListener(this);
-        // Lägg till knappar och lyssnare i playArea.
+
+        for (JButton button : listOfButtonsSorted) {
+            button.addActionListener(this);
+        }
+
         resetGame();
 
         setTitle("Slide Puzzle");
@@ -65,7 +78,9 @@ public class Main extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == resetButton) {
+            playArea.removeAll();
             resetGame();
+            playArea.removeAll();
             resetGame();
         }
         else if (e.getSource() == highscore) {
@@ -81,15 +96,18 @@ public class Main extends JFrame implements ActionListener {
         playArea.removeAll();
         moveCounter = 0;
         counter.setText("Antal klick: " + moveCounter);
+
         listOfRandomizedButtons = rb.getRamdomizedButtons(listOfButtonsSorted);
+
         if (presentationMode){
             listOfRandomizedButtons = listOfPresentationButtons;
         }
+
         for (JButton button : listOfRandomizedButtons) {
             Font newFont=new Font(button.getName(), Font.ITALIC, 40);
             button.setFont(newFont);
             playArea.add(button);
-            button.addActionListener(this);
+
         }
         playArea.revalidate();
         playArea.repaint();
@@ -118,5 +136,5 @@ public class Main extends JFrame implements ActionListener {
         Main m = new Main();
     }
 }
-// Merge konflikt: Vid merge av Arvids branch till master och sedan
-// robins till master så visade master en variant INNAN Arvids branch
+// Merge konflikt: Vid merge av Arvids branch --> master och sedan
+// robins --> master så visade master en variant INNAN Arvids branch

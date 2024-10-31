@@ -10,6 +10,7 @@ public class JButtonComparison {
             }
         }
         JOptionPane.showMessageDialog(null, "GRATTIS! Du har löst spelet!");
+
     }
 
 }
