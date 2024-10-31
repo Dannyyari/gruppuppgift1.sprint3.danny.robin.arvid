@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +14,9 @@ public class Main extends JFrame implements ActionListener {
     JPanel southArea = new JPanel();
     JPanel playArea = new JPanel();
     JButton resetButton = new JButton("Nytt spel");
+    JButton highscore = new JButton("Highscore");
+    int moveCounter = 0;
+    JLabel counter = new JLabel("Antal klick: " + moveCounter);
     JButton b1 = new JButton("1");
     JButton b2 = new JButton("2");
     JButton b3 = new JButton("3");
@@ -45,12 +47,11 @@ public class Main extends JFrame implements ActionListener {
         mainArea.add(southArea, BorderLayout.SOUTH);
         mainArea.add(playArea);
         southArea.add(resetButton);
-
-        if (presentationMode == true){
-            listOfRandomizedButtons = listOfPresentationButtons;
-        }
+        southArea.add(counter);
+        southArea.add(highscore);
 
         resetButton.addActionListener(this);
+        highscore.addActionListener(this);
         // Lägg till knappar och lyssnare i playArea.
         resetGame();
 
@@ -62,24 +63,27 @@ public class Main extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        Main m = new Main();
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == resetButton) {
             resetGame();
             resetGame();
-        } else {
-            moveButton((JButton) e.getSource());
+        }
+        else if (e.getSource() == highscore) {
+
+        }
+        else {
+            clickedButton = (JButton) e.getSource();
+            moveButton();
         }
     }
 
     public void resetGame() {
         playArea.removeAll();
         listOfRandomizedButtons = rb.getRamdomizedButtons(listOfButtonsSorted);
-        Collections.shuffle(listOfRandomizedButtons);
+        if (presentationMode){
+            listOfRandomizedButtons = listOfPresentationButtons;
+        }
         for (JButton button : listOfRandomizedButtons) {
             playArea.add(button);
             button.addActionListener(this);
@@ -88,6 +92,7 @@ public class Main extends JFrame implements ActionListener {
         playArea.repaint();
         SwingUtilities.updateComponentTreeUI(this);
 }
+
     public void moveButton() {
         int indexClick = listOfRandomizedButtons.indexOf(clickedButton);
         int index16 = listOfRandomizedButtons.indexOf(b16);
@@ -98,9 +103,17 @@ public class Main extends JFrame implements ActionListener {
             for (JButton jb : listOfRandomizedButtons) {
                 playArea.add(jb);
             }
+            moveCounter++;
+            counter.setText("Antal klick: " + moveCounter);
             playArea.repaint();
             SwingUtilities.updateComponentTreeUI(this);
             jbc.compareAnswers(listOfRandomizedButtons,listOfButtonsSorted);
         }
     }
+
+    public static void main(String[] args) {
+        Main m = new Main();
+    }
 }
+// Merge konflikt: Vid merge av Arvids branch till master och sedan
+// robins till master så visade master en variant INNAN Arvids branch
