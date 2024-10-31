@@ -7,19 +7,8 @@ public class RandomizeButtons {
     public RandomizeButtons(){}
 
     public List<JButton> getRamdomizedButtons(List<JButton> listOfButtonsInOrder){
-        Collections.shuffle(listOfButtonsInOrder);
-        return listOfButtonsInOrder;
-    }
-
-    //onödig lista kanske
-    //tar en JButton List och gör om till Integer List
-    public List<Integer> getButtonNumber(List<JButton> listOfButtonsAlreadyRandomized){
-        int button=0;
-        List<Integer> returnButtonNumber=new ArrayList<>();
-        for (JButton buttonint : listOfButtonsAlreadyRandomized) {
-          returnButtonNumber.add(Integer.parseInt(buttonint.getText()));
-        }
-
-        return returnButtonNumber;
+        List<JButton> copyOfList = new ArrayList<>(listOfButtonsInOrder);
+        Collections.shuffle(copyOfList);
+        return copyOfList;
     }
 }

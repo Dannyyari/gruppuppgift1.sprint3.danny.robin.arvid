@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Main extends JFrame implements ActionListener {
+    boolean presentationMode = false;
     RandomizeButtons rb = new RandomizeButtons();
     JButtonComparison jbc = new JButtonComparison();
     JPanel mainArea = new JPanel();
@@ -32,6 +33,8 @@ public class Main extends JFrame implements ActionListener {
     List<JButton> listOfButtonsSorted = Arrays.asList(b1, b2, b3, b4, b5, b6, b7, b8,
             b9, b10, b11, b12, b13, b14, b15, b16);
     List<JButton> listOfRandomizedButtons = rb.getRamdomizedButtons(listOfButtonsSorted);
+    List<JButton> listOfPresentationButtons = Arrays.asList(b1, b2, b3, b4, b5, b6, b7, b8,
+            b9, b10, b11, b12, b13, b14, b16,b15);
     JButton clickedButton;
 
     public Main() {
@@ -42,26 +45,31 @@ public class Main extends JFrame implements ActionListener {
         mainArea.add(playArea);
         southArea.add(resetButton);
 
+        if (presentationMode == true){
+            listOfRandomizedButtons = listOfPresentationButtons;
+        }
+
         for (JButton randomButton : listOfRandomizedButtons) {
             playArea.add(randomButton);
+            randomButton.addActionListener(this);
         }
-        //Kanske flytta denna actionlistner i en annan klass?
+
         resetButton.addActionListener(this);
-        b1.addActionListener(this);
-        b2.addActionListener(this);
-        b3.addActionListener(this);
-        b4.addActionListener(this);
-        b5.addActionListener(this);
-        b6.addActionListener(this);
-        b7.addActionListener(this);
-        b8.addActionListener(this);
-        b9.addActionListener(this);
-        b10.addActionListener(this);
-        b11.addActionListener(this);
-        b12.addActionListener(this);
-        b13.addActionListener(this);
-        b14.addActionListener(this);
-        b15.addActionListener(this);
+//        b1.addActionListener(this);
+//        b2.addActionListener(this);
+//        b3.addActionListener(this);
+//        b4.addActionListener(this);
+//        b5.addActionListener(this);
+//        b6.addActionListener(this);
+//        b7.addActionListener(this);
+//        b8.addActionListener(this);
+//        b9.addActionListener(this);
+//        b10.addActionListener(this);
+//        b11.addActionListener(this);
+//        b12.addActionListener(this);
+//        b13.addActionListener(this);
+//        b14.addActionListener(this);
+//        b15.addActionListener(this);
 
         setTitle("Slide Game");
         setSize(400, 400);
@@ -83,8 +91,8 @@ public class Main extends JFrame implements ActionListener {
             for (JButton jButton : randomizedListForButton) {
                 playArea.add(jButton);
             }
-            playArea.repaint();
-            //funktion nedan förnyar rutan
+           // playArea.repaint();
+            //playArea.revalidate();
             SwingUtilities.updateComponentTreeUI(this);
         } else {
             clickedButton = (JButton) e.getSource();
@@ -97,7 +105,8 @@ public class Main extends JFrame implements ActionListener {
         int index16 = listOfRandomizedButtons.indexOf(b16);
         if ((indexClick - 1) == index16 || (indexClick + 1) == index16 ||
                 (indexClick - 4) == index16 || (indexClick + 4) == index16) {
-            Collections.swap(listOfRandomizedButtons, listOfRandomizedButtons.indexOf(clickedButton), listOfRandomizedButtons.indexOf(b16));
+            Collections.swap(listOfRandomizedButtons, listOfRandomizedButtons.indexOf(clickedButton),
+                    listOfRandomizedButtons.indexOf(b16));
             for (JButton jb : listOfRandomizedButtons) {
                 playArea.add(jb);
             }
