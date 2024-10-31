@@ -2,12 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main extends JFrame implements ActionListener {
-    boolean presentationMode = false;
+    boolean presentationMode = true;
     RandomizeButtons rb = new RandomizeButtons();
     JButtonComparison jbc = new JButtonComparison();
     JPanel mainArea = new JPanel();
@@ -49,10 +53,13 @@ public class Main extends JFrame implements ActionListener {
         southArea.add(resetButton);
         southArea.add(counter);
         southArea.add(highscore);
-
         resetButton.addActionListener(this);
         highscore.addActionListener(this);
-        // Lägg till knappar och lyssnare i playArea.
+        // Lägger till lyssnare i playArea.
+        for (JButton button : listOfButtonsSorted) {
+            button.addActionListener(this);
+        }
+
         resetGame();
 
         setTitle("Slide Puzzle");
@@ -69,7 +76,7 @@ public class Main extends JFrame implements ActionListener {
             resetGame();
         }
         else if (e.getSource() == highscore) {
-
+            showHighScore();
         }
         else {
             clickedButton = (JButton) e.getSource();
@@ -89,7 +96,6 @@ public class Main extends JFrame implements ActionListener {
             Font newFont=new Font(button.getName(), Font.ITALIC, 40);
             button.setFont(newFont);
             playArea.add(button);
-            button.addActionListener(this);
         }
         playArea.revalidate();
         playArea.repaint();
@@ -112,6 +118,19 @@ public class Main extends JFrame implements ActionListener {
             SwingUtilities.updateComponentTreeUI(this);
             jbc.compareAnswers(listOfRandomizedButtons,listOfButtonsSorted);
         }
+    }
+
+    public void showHighScore(){
+        Path hsPath = Paths.get("src/highscore.txt");
+        StringBuilder highscore = new StringBuilder();
+        try(Scanner sc = new Scanner(hsPath)){
+            while (sc.hasNextLine()){
+                highscore.append(sc.nextLine()).append("\n");
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Något gick fel vid läsning av fil.");
+        }
+        JOptionPane.showMessageDialog(null, highscore);
     }
 
     public static void main(String[] args) {
