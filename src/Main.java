@@ -85,6 +85,8 @@ public class Main extends JFrame implements ActionListener {
             listOfRandomizedButtons = listOfPresentationButtons;
         }
         for (JButton button : listOfRandomizedButtons) {
+            Font newFont=new Font(button.getName(), Font.ITALIC, 40);
+            button.setFont(newFont);
             playArea.add(button);
             button.addActionListener(this);
         }
