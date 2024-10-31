@@ -2,9 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main extends JFrame implements ActionListener {
     boolean presentationMode = false;
@@ -78,13 +82,11 @@ public class Main extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == resetButton) {
-            playArea.removeAll();
             resetGame();
-            playArea.removeAll();
             resetGame();
         }
         else if (e.getSource() == highscore) {
-
+            showHighScore();
         }
         else {
             clickedButton = (JButton) e.getSource();
@@ -96,9 +98,7 @@ public class Main extends JFrame implements ActionListener {
         playArea.removeAll();
         moveCounter = 0;
         counter.setText("Antal klick: " + moveCounter);
-
         listOfRandomizedButtons = rb.getRamdomizedButtons(listOfButtonsSorted);
-
         if (presentationMode){
             listOfRandomizedButtons = listOfPresentationButtons;
         }
@@ -107,7 +107,6 @@ public class Main extends JFrame implements ActionListener {
             Font newFont=new Font(button.getName(), Font.ITALIC, 40);
             button.setFont(newFont);
             playArea.add(button);
-
         }
         playArea.revalidate();
         playArea.repaint();
@@ -130,6 +129,19 @@ public class Main extends JFrame implements ActionListener {
             SwingUtilities.updateComponentTreeUI(this);
             jbc.compareAnswers(listOfRandomizedButtons,listOfButtonsSorted);
         }
+    }
+
+    public void showHighScore(){
+        Path hsPath = Paths.get("src/highscore.txt");
+        StringBuilder highscore = new StringBuilder();
+        try(Scanner sc = new Scanner(hsPath)){
+            while (sc.hasNextLine()){
+                highscore.append(sc.nextLine()).append("\n");
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Något gick fel vid läsning av fil.");
+        }
+        JOptionPane.showMessageDialog(null, highscore);
     }
 
     public static void main(String[] args) {
