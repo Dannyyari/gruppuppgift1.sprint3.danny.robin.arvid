@@ -11,6 +11,6 @@ public class JButtonComparison {
                 match = false;
         }
             if (match)
-                JOptionPane.showMessageDialog(null, "GRATTIS!");
+                JOptionPane.showMessageDialog(null, "Grattis, du vann!");
     }
 }

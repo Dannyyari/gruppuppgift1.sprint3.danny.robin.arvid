@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class RandomizeButtons {
-    public RandomizeButtons(){}
+        public RandomizeButtons(){}
 
     public List<JButton> getRamdomizedButtons(List<JButton> listOfButtonsInOrder){
         List<JButton> copyOfList = new ArrayList<>(listOfButtonsInOrder);

@@ -14,6 +14,9 @@ public class Main extends JFrame implements ActionListener {
     JPanel southArea = new JPanel();
     JPanel playArea = new JPanel();
     JButton resetButton = new JButton("Nytt spel");
+    JButton highscore = new JButton("Highscore");
+    int moveCounter = 0;
+    JLabel counter = new JLabel("Antal klick: " + moveCounter);
     JButton b1 = new JButton("1");
     JButton b2 = new JButton("2");
     JButton b3 = new JButton("3");
@@ -44,60 +47,50 @@ public class Main extends JFrame implements ActionListener {
         mainArea.add(southArea, BorderLayout.SOUTH);
         mainArea.add(playArea);
         southArea.add(resetButton);
-
-        if (presentationMode == true){
-            listOfRandomizedButtons = listOfPresentationButtons;
-        }
-
-        for (JButton randomButton : listOfRandomizedButtons) {
-            playArea.add(randomButton);
-            randomButton.addActionListener(this);
-        }
+        southArea.add(counter);
+        southArea.add(highscore);
 
         resetButton.addActionListener(this);
-//        b1.addActionListener(this);
-//        b2.addActionListener(this);
-//        b3.addActionListener(this);
-//        b4.addActionListener(this);
-//        b5.addActionListener(this);
-//        b6.addActionListener(this);
-//        b7.addActionListener(this);
-//        b8.addActionListener(this);
-//        b9.addActionListener(this);
-//        b10.addActionListener(this);
-//        b11.addActionListener(this);
-//        b12.addActionListener(this);
-//        b13.addActionListener(this);
-//        b14.addActionListener(this);
-//        b15.addActionListener(this);
+        highscore.addActionListener(this);
+        // Lägg till knappar och lyssnare i playArea.
+        resetGame();
 
-        setTitle("Slide Game");
-        setSize(400, 400);
+        setTitle("Slide Puzzle");
+        setSize(400,400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        Main m = new Main();
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == resetButton) {
-            List<JButton> randomizedListForButton = rb.getRamdomizedButtons(listOfButtonsSorted);
-            playArea.removeAll();
-            for (JButton jButton : randomizedListForButton) {
-                playArea.add(jButton);
-            }
-           // playArea.repaint();
-            //playArea.revalidate();
-            SwingUtilities.updateComponentTreeUI(this);
-        } else {
+            resetGame();
+            resetGame();
+        }
+        else if (e.getSource() == highscore) {
+
+        }
+        else {
             clickedButton = (JButton) e.getSource();
             moveButton();
         }
     }
+
+    public void resetGame() {
+        playArea.removeAll();
+        listOfRandomizedButtons = rb.getRamdomizedButtons(listOfButtonsSorted);
+        if (presentationMode){
+            listOfRandomizedButtons = listOfPresentationButtons;
+        }
+        for (JButton button : listOfRandomizedButtons) {
+            playArea.add(button);
+            button.addActionListener(this);
+        }
+        playArea.revalidate();
+        playArea.repaint();
+        SwingUtilities.updateComponentTreeUI(this);
+}
 
     public void moveButton() {
         int indexClick = listOfRandomizedButtons.indexOf(clickedButton);
@@ -109,9 +102,17 @@ public class Main extends JFrame implements ActionListener {
             for (JButton jb : listOfRandomizedButtons) {
                 playArea.add(jb);
             }
+            moveCounter++;
+            counter.setText("Antal klick: " + moveCounter);
             playArea.repaint();
             SwingUtilities.updateComponentTreeUI(this);
             jbc.compareAnswers(listOfRandomizedButtons,listOfButtonsSorted);
         }
     }
+
+    public static void main(String[] args) {
+        Main m = new Main();
+    }
 }
+// Merge konflikt: Vid merge av Arvids branch till master och sedan
+// robins till master så visade master en variant INNAN Arvids branch
