@@ -5,28 +5,23 @@ import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Scanner;
 
 public class Main extends JFrame implements ActionListener {
-    boolean presentationMode = false;
-
-    RandomizeButtons rb = new RandomizeButtons();
-    JButtonComparison jbc = new JButtonComparison();
+    boolean presentationMode =true;
+    int moveCounter = 0;
 
     JPanel mainArea = new JPanel();
     JPanel southArea = new JPanel();
     JPanel playArea = new JPanel();
 
-    int moveCounter =0;
-
+    JLabel counter = new JLabel("Antal klick: " + moveCounter);
     JButton resetButton = new JButton("Nytt spel");
     JButton highscore = new JButton("Highscore");
-    JLabel counter = new JLabel("Antal klick: " + moveCounter);
 
     JButton b1 = new JButton("1");
     JButton b2 = new JButton("2");
@@ -44,13 +39,13 @@ public class Main extends JFrame implements ActionListener {
     JButton b14 = new JButton("14");
     JButton b15 = new JButton("15");
     JButton b16 = new JButton("");
+    JButton clickedButton;
 
     List<JButton> listOfButtonsSorted = Arrays.asList(b1, b2, b3, b4, b5, b6, b7, b8,
             b9, b10, b11, b12, b13, b14, b15, b16);
-    List<JButton> listOfRandomizedButtons = rb.getRamdomizedButtons(listOfButtonsSorted);
+    List<JButton> listOfRandomizedButtons = getRamdomizedButtons(listOfButtonsSorted);
     List<JButton> listOfPresentationButtons = Arrays.asList(b1, b2, b3, b4, b5, b6, b7, b8,
-            b9, b10, b11, b12, b13, b14, b16,b15);
-    JButton clickedButton;
+            b9, b10, b11, b12, b13, b14, b16, b15);
 
     public Main() {
         add(mainArea);
@@ -75,7 +70,7 @@ public class Main extends JFrame implements ActionListener {
         resetGame();
 
         setTitle("Slide Puzzle");
-        setSize(400,400);
+        setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -86,11 +81,9 @@ public class Main extends JFrame implements ActionListener {
         if (e.getSource() == resetButton) {
             resetGame();
             resetGame();
-        }
-        else if (e.getSource() == highscore) {
+        } else if (e.getSource() == highscore) {
             showHighScore();
-        }
-        else {
+        } else {
             clickedButton = (JButton) e.getSource();
             moveButton();
         }
@@ -100,13 +93,13 @@ public class Main extends JFrame implements ActionListener {
         playArea.removeAll();
         moveCounter = 0;
         counter.setText("Antal klick: " + moveCounter);
-        listOfRandomizedButtons = rb.getRamdomizedButtons(listOfButtonsSorted);
-        if (presentationMode){
+        listOfRandomizedButtons = getRamdomizedButtons(listOfButtonsSorted);
+        if (presentationMode) {
             listOfRandomizedButtons = listOfPresentationButtons;
         }
 
         for (JButton button : listOfRandomizedButtons) {
-            Font newFont=new Font(button.getName(), Font.ITALIC, 40);
+            Font newFont = new Font(button.getName(), Font.ITALIC, 40);
             button.setFont(newFont);
             playArea.add(button);
         }
@@ -129,41 +122,56 @@ public class Main extends JFrame implements ActionListener {
             counter.setText("Antal klick: " + moveCounter);
             playArea.repaint();
             SwingUtilities.updateComponentTreeUI(this);
-            jbc.compareAnswers(listOfRandomizedButtons,listOfButtonsSorted);
-            if (listOfRandomizedButtons.equals(listOfButtonsSorted)){
+
+            if (listOfRandomizedButtons.equals(listOfButtonsSorted)) {
+                JOptionPane.showMessageDialog(null, "GRATTIS! Du har löst spelet!");
                 addToHighscore();
             }
         }
     }
 
-    public void showHighScore(){
+    public void showHighScore() {
         Path hsPath = Paths.get("src/highscore.txt");
         StringBuilder highscore = new StringBuilder();
-        try(Scanner sc = new Scanner(hsPath)){
-            while (sc.hasNextLine()){
+        try (Scanner sc = new Scanner(hsPath)) {
+            while (sc.hasNextLine()) {
                 highscore.append(sc.nextLine()).append("\n");
             }
-        } catch (IOException ex) {
+        } catch (NoSuchFileException e){
+            e.printStackTrace();
+            System.out.println("Kunde ej hitta fil att läsa från");
+        }
+        catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Något gick fel vid läsning av fil.");
+            ex.printStackTrace();
         }
         JOptionPane.showMessageDialog(null, highscore);
     }
 
     public void addToHighscore() {
-        String pathtofile="src/highscore.txt";
-        try(BufferedWriter w=new BufferedWriter(new FileWriter(pathtofile, true))) {
-            String name = JOptionPane.showInputDialog("vad heter du");
-            w.write(name + " poäng: " +moveCounter+"\n");
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        String pathtofile = "src/highscore.txt";
+        try (BufferedWriter w = new BufferedWriter(new FileWriter(pathtofile, true))) {
+            String name = JOptionPane.showInputDialog("Vad heter du?");
+            w.write(name + " Antal klick: " + moveCounter + "\n");
+        }
+        catch (IOException e) {
+            System.out.println("Fel vid utskrift till fil");
+            e.printStackTrace();
         }
     }
+
+    public List<JButton> getRamdomizedButtons(List<JButton> listOfButtonsInOrder){
+        List<JButton> copyOfList = new ArrayList<>(listOfButtonsInOrder);
+        Collections.shuffle(copyOfList);
+        return copyOfList;
+    }
+
     public static void main(String[] args) {
         Main main = new Main();
     }
-
 }
 
 // Merge konflikt: Vid merge av Arvids branch --> master och sedan
 // robins --> master så visade master en variant INNAN Arvids branch
+
+// Github repo: https://github.com/Dannyyari/gruppuppgift1.sprint3.danny.robin.arvid
