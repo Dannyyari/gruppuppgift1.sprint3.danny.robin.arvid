@@ -12,7 +12,8 @@ import java.util.*;
 import java.util.List;
 
 public class Main extends JFrame implements ActionListener {
-    boolean presentationMode =true;
+    boolean presentationMode = false;
+
     int moveCounter = 0;
 
     JPanel mainArea = new JPanel();
@@ -54,7 +55,7 @@ public class Main extends JFrame implements ActionListener {
         playArea.setLayout(new GridLayout(4, 4));
 
         mainArea.add(southArea, BorderLayout.SOUTH);
-        mainArea.add(playArea);
+        mainArea.add(playArea, BorderLayout.CENTER);
 
         southArea.add(resetButton);
         southArea.add(counter);
@@ -64,6 +65,8 @@ public class Main extends JFrame implements ActionListener {
         highscore.addActionListener(this);
 
         for (JButton button : listOfButtonsSorted) {
+            Font newFont = new Font(button.getName(), Font.ITALIC, 40);
+            button.setFont(newFont);
             button.addActionListener(this);
         }
 
@@ -97,10 +100,7 @@ public class Main extends JFrame implements ActionListener {
         if (presentationMode) {
             listOfRandomizedButtons = listOfPresentationButtons;
         }
-
         for (JButton button : listOfRandomizedButtons) {
-            Font newFont = new Font(button.getName(), Font.ITALIC, 40);
-            button.setFont(newFont);
             playArea.add(button);
         }
         playArea.revalidate();
@@ -118,6 +118,7 @@ public class Main extends JFrame implements ActionListener {
             for (JButton jb : listOfRandomizedButtons) {
                 playArea.add(jb);
             }
+
             moveCounter++;
             counter.setText("Antal klick: " + moveCounter);
             playArea.repaint();
@@ -138,8 +139,8 @@ public class Main extends JFrame implements ActionListener {
                 highscore.append(sc.nextLine()).append("\n");
             }
         } catch (NoSuchFileException e){
+            JOptionPane.showMessageDialog(null, "Kunde ej hitta fil att läsa från.");
             e.printStackTrace();
-            System.out.println("Kunde ej hitta fil att läsa från");
         }
         catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Något gick fel vid läsning av fil.");
@@ -152,10 +153,19 @@ public class Main extends JFrame implements ActionListener {
         String pathtofile = "src/highscore.txt";
         try (BufferedWriter w = new BufferedWriter(new FileWriter(pathtofile, true))) {
             String name = JOptionPane.showInputDialog("Vad heter du?");
-            w.write(name + " Antal klick: " + moveCounter + "\n");
+            if (name==null) {
+                JOptionPane.showMessageDialog(null, "Highscore sparades ej.");
+            }
+            else if (name.isEmpty()) {
+                w.write( "Okänd spelare"+ " Antal klick: " + moveCounter + "\n");
+            }
+            else {
+                w.write(name + " Antal klick: " + moveCounter + "\n");
+            }
+
         }
         catch (IOException e) {
-            System.out.println("Fel vid utskrift till fil");
+            JOptionPane.showMessageDialog(null, "Något gick fel vid skrivning till fil.");
             e.printStackTrace();
         }
     }
@@ -167,7 +177,7 @@ public class Main extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        Main main = new Main();
+        Main m = new Main();
     }
 }
 
