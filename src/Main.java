@@ -65,7 +65,10 @@ public class Main extends JFrame implements ActionListener {
         highscore.addActionListener(this);
 
         for (JButton button : listOfButtonsSorted) {
-            Font newFont = new Font(button.getName(), Font.ITALIC, 40);
+            button.setBackground(Color.LIGHT_GRAY);  // Bakgrundsfärg för knapparna
+            button.setForeground(Color.DARK_GRAY);   // Textfärg på knapparna
+            button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2)); // kantlinje
+            Font newFont = new Font("Arial", Font.BOLD, 40);
             button.setFont(newFont);
             button.addActionListener(this);
         }
